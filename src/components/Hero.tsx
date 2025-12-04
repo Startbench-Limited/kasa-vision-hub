@@ -2,6 +2,7 @@ import kasaLogo from "@/assets/kasa-logo.jpg";
 import { Button } from "@/components/ui/button";
 import { ArrowDown, Shield, Target, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
+import ApplicationDialog from "./ApplicationDialog";
 
 const Hero = () => {
   return (
@@ -30,15 +31,14 @@ const Hero = () => {
           <nav className="hidden md:flex items-center gap-8">
             <a href="#about" className="text-primary-foreground/90 hover:text-primary-foreground transition-colors font-medium">About</a>
             <a href="#services" className="text-primary-foreground/90 hover:text-primary-foreground transition-colors font-medium">Services</a>
-            <a href="#apply" className="text-primary-foreground/90 hover:text-primary-foreground transition-colors font-medium">Apply</a>
             <Link to="/verify" className="text-primary-foreground/90 hover:text-primary-foreground transition-colors font-medium">Verify</Link>
             <a href="#contact" className="text-primary-foreground/90 hover:text-primary-foreground transition-colors font-medium">Contact</a>
           </nav>
-          <Link to="#apply">
+          <ApplicationDialog>
             <Button variant="hero" size="sm" className="hidden md:flex">
               Apply Now
             </Button>
-          </Link>
+          </ApplicationDialog>
         </header>
 
         {/* Hero Content */}
@@ -61,11 +61,13 @@ const Hero = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-              <Button variant="hero" size="xl">
-                Apply for Signage Permit
-              </Button>
-              <Button variant="heroOutline" size="xl">
-                Learn More
+              <ApplicationDialog>
+                <Button variant="hero" size="xl">
+                  Apply for Signage Permit
+                </Button>
+              </ApplicationDialog>
+              <Button variant="heroOutline" size="xl" asChild>
+                <a href="#about">Learn More</a>
               </Button>
             </div>
           </div>
