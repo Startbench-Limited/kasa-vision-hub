@@ -23,10 +23,11 @@ const Auth = () => {
   const [signupData, setSignupData] = useState({ email: '', password: '', fullName: '' });
 
   useEffect(() => {
-    if (user && isAdmin) {
+    // Redirect authenticated users to admin - let that page handle access control
+    if (user && !loading) {
       navigate('/admin');
     }
-  }, [user, isAdmin, navigate]);
+  }, [user, loading, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
