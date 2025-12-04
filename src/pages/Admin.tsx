@@ -48,10 +48,38 @@ const Admin = () => {
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
   useEffect(() => {
-    if (!loading && (!user || !isAdmin)) {
+    if (!loading && !user) {
       navigate('/auth');
     }
-  }, [user, isAdmin, loading, navigate]);
+  }, [user, loading, navigate]);
+
+  // Show pending approval message for non-admin users
+  if (!loading && user && !isAdmin) {
+    return (
+      <div className="min-h-screen bg-secondary flex items-center justify-center p-4">
+        <Card className="max-w-md w-full card-shadow">
+          <CardHeader className="text-center">
+            <div className="w-16 h-16 rounded-2xl bg-amber-500/10 flex items-center justify-center mx-auto mb-4">
+              <Clock className="w-8 h-8 text-amber-500" />
+            </div>
+            <CardTitle className="font-display text-2xl">Pending Approval</CardTitle>
+            <CardDescription>
+              Your account is awaiting admin approval. Please contact an administrator to get access to the dashboard.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-muted-foreground text-center">
+              Logged in as: {user.email}
+            </p>
+            <Button onClick={async () => { await signOut(); navigate('/'); }} variant="outline" className="w-full">
+              <LogOut className="w-4 h-4 mr-2" />
+              Sign Out
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   useEffect(() => {
     if (user && isAdmin) {
