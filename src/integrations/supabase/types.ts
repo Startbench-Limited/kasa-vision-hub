@@ -131,6 +131,21 @@ export type Database = {
         }
         Returns: boolean
       }
+      verify_application: {
+        Args: { p_application_id: string }
+        Returns: {
+          amount_due: number
+          amount_paid: number
+          application_id: string
+          business_name: string
+          expiry_date: string
+          issued_date: string
+          location: string
+          payment_date: string
+          signage_type: Database["public"]["Enums"]["signage_type"]
+          status: Database["public"]["Enums"]["application_status"]
+        }[]
+      }
     }
     Enums: {
       app_role: "admin" | "staff" | "user"
