@@ -14,7 +14,63 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      signage_applications: {
+        Row: {
+          amount_due: number | null
+          amount_paid: number | null
+          application_id: string
+          business_name: string
+          created_at: string
+          description: string | null
+          email: string
+          expiry_date: string | null
+          id: string
+          issued_date: string | null
+          location: string | null
+          payment_date: string | null
+          phone: string | null
+          signage_type: Database["public"]["Enums"]["signage_type"]
+          status: Database["public"]["Enums"]["application_status"]
+          updated_at: string
+        }
+        Insert: {
+          amount_due?: number | null
+          amount_paid?: number | null
+          application_id: string
+          business_name: string
+          created_at?: string
+          description?: string | null
+          email: string
+          expiry_date?: string | null
+          id?: string
+          issued_date?: string | null
+          location?: string | null
+          payment_date?: string | null
+          phone?: string | null
+          signage_type: Database["public"]["Enums"]["signage_type"]
+          status?: Database["public"]["Enums"]["application_status"]
+          updated_at?: string
+        }
+        Update: {
+          amount_due?: number | null
+          amount_paid?: number | null
+          application_id?: string
+          business_name?: string
+          created_at?: string
+          description?: string | null
+          email?: string
+          expiry_date?: string | null
+          id?: string
+          issued_date?: string | null
+          location?: string | null
+          payment_date?: string | null
+          phone?: string | null
+          signage_type?: Database["public"]["Enums"]["signage_type"]
+          status?: Database["public"]["Enums"]["application_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +79,20 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      application_status:
+        | "pending_payment"
+        | "paid"
+        | "approved"
+        | "rejected"
+        | "expired"
+      signage_type:
+        | "billboard"
+        | "banner"
+        | "neon_sign"
+        | "led_display"
+        | "wall_mount"
+        | "vehicle_wrap"
+        | "other"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +219,23 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      application_status: [
+        "pending_payment",
+        "paid",
+        "approved",
+        "rejected",
+        "expired",
+      ],
+      signage_type: [
+        "billboard",
+        "banner",
+        "neon_sign",
+        "led_display",
+        "wall_mount",
+        "vehicle_wrap",
+        "other",
+      ],
+    },
   },
 } as const
