@@ -28,18 +28,41 @@ const About = () => {
   return (
     <section id="about" className="py-24 bg-background">
       <div className="container mx-auto px-4">
-        {/* DG Image Section */}
-        <div className="flex justify-center mb-12">
-          <div className="relative">
-            <div className="w-64 h-64 md:w-80 md:h-80 rounded-2xl overflow-hidden card-shadow">
-              <img 
-                src={dgImage} 
-                alt="Director General of KASA" 
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-6 py-2 rounded-full text-sm font-semibold whitespace-nowrap">
-              Director General
+        {/* DG Profile Section */}
+        <div className="grid lg:grid-cols-2 gap-12 items-center mb-20">
+          {/* Profile Text - Left Side */}
+          <div className="animate-slide-up order-2 lg:order-1">
+            <span className="inline-block text-primary font-semibold text-sm tracking-wider uppercase mb-4">
+              Leadership
+            </span>
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-bold text-foreground mb-2">
+              Kabiru Saidu Dakata
+            </h2>
+            <p className="text-primary font-semibold mb-6">Director General, KASA</p>
+            <p className="text-muted-foreground leading-relaxed mb-4">
+              Kabiru Saidu Dakata is the Executive Director of the Centre for Awareness on Justice and Accountability (CAJA). He obtained an M.Sc. in Peace and Conflict Resolution, a Master's in Development Studies (MDS), a Master's in Business Administration (MBA), B.Sc. in Economics, as well as an Advanced Diploma in Law.
+            </p>
+            <p className="text-muted-foreground leading-relaxed mb-4">
+              He has more than 10 years' experience in research, advocacy and public awareness on issues related to promoting democratic accountability, social justice and peace-building in Nigeria. He is an advocate for policy reform in the social and economic sectors, like education, health, youth employment, tax justice, etc.
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              He is a passionate development activist with experience in community development, community needs assessment, budget tracking, peace-building, gender issues, conflict prevention, monitoring & evaluation, and proposal writing. He is a member of the Nigerian Institute of Management (NIM) and a graduate member of the African Centre for Leadership Strategy and Development.
+            </p>
+          </div>
+
+          {/* DG Image - Right Side */}
+          <div className="flex justify-center order-1 lg:order-2">
+            <div className="relative">
+              <div className="w-64 h-64 md:w-80 md:h-80 rounded-2xl overflow-hidden card-shadow">
+                <img 
+                  src={dgImage} 
+                  alt="Kabiru Saidu Dakata - Director General of KASA" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-6 py-2 rounded-full text-sm font-semibold whitespace-nowrap">
+                Director General
+              </div>
             </div>
           </div>
         </div>
