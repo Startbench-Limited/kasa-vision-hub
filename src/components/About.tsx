@@ -1,4 +1,4 @@
-import { CheckCircle, Users, Building, Leaf } from "lucide-react";
+import { CheckCircle, Users, Building, Leaf, Linkedin, Facebook } from "lucide-react";
 import dgImage from "@/assets/dg-image.png";
 
 const About = () => {
@@ -40,14 +40,32 @@ const About = () => {
             </h2>
             <p className="text-primary font-semibold mb-6">Director General, KASA</p>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              Kabiru Saidu Dakata is the Executive Director of the Centre for Awareness on Justice and Accountability (CAJA). He obtained an M.Sc. in Peace and Conflict Resolution, a Master's in Development Studies (MDS), a Master's in Business Administration (MBA), B.Sc. in Economics, as well as an Advanced Diploma in Law.
+              Kabiru Saidu Dakata is the Director General of the Kano State Signage & Advertisement Agency (KASA). He obtained an M.Sc. in Peace and Conflict Resolution, a Master's in Development Studies (MDS), a Master's in Business Administration (MBA), B.Sc. in Economics, as well as an Advanced Diploma in Law.
             </p>
             <p className="text-muted-foreground leading-relaxed mb-4">
               He has more than 10 years' experience in research, advocacy and public awareness on issues related to promoting democratic accountability, social justice and peace-building in Nigeria. He is an advocate for policy reform in the social and economic sectors, like education, health, youth employment, tax justice, etc.
             </p>
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="text-muted-foreground leading-relaxed mb-6">
               He is a passionate development activist with experience in community development, community needs assessment, budget tracking, peace-building, gender issues, conflict prevention, monitoring & evaluation, and proposal writing. He is a member of the Nigerian Institute of Management (NIM) and a graduate member of the African Centre for Leadership Strategy and Development.
             </p>
+            <div className="flex gap-4">
+              <a 
+                href="https://www.linkedin.com/in/kabiru-dakata-049ab5246" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
+              >
+                <Linkedin className="w-5 h-5" />
+              </a>
+              <a 
+                href="https://www.facebook.com/kabir.dakata.5" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
+              >
+                <Facebook className="w-5 h-5" />
+              </a>
+            </div>
           </div>
 
           {/* DG Image - Right Side */}
