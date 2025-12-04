@@ -10,12 +10,10 @@ import { Search, CheckCircle, XCircle, Clock, AlertTriangle, ArrowLeft, QrCode, 
 
 type ApplicationStatus = 'pending_payment' | 'paid' | 'approved' | 'rejected' | 'expired';
 
-interface Application {
-  id: string;
+// Verification response only contains non-sensitive fields
+interface VerificationData {
   application_id: string;
   business_name: string;
-  email: string;
-  phone: string | null;
   signage_type: string;
   location: string | null;
   status: ApplicationStatus;
@@ -24,7 +22,6 @@ interface Application {
   payment_date: string | null;
   issued_date: string | null;
   expiry_date: string | null;
-  created_at: string;
 }
 
 const statusConfig: Record<ApplicationStatus, { label: string; color: string; icon: React.ComponentType<{ className?: string }> }> = {
@@ -38,7 +35,7 @@ const statusConfig: Record<ApplicationStatus, { label: string; color: string; ic
 const Verify = () => {
   const [searchParams] = useSearchParams();
   const [applicationId, setApplicationId] = useState(searchParams.get("id") || "");
-  const [application, setApplication] = useState<Application | null>(null);
+  const [application, setApplication] = useState<VerificationData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searched, setSearched] = useState(false);
@@ -66,7 +63,8 @@ const Verify = () => {
           filter: `application_id=eq.${application.application_id}`
         },
         (payload) => {
-          setApplication(payload.new as Application);
+          // Re-fetch via secure function on updates
+          handleSearch(application.application_id);
         }
       )
       .subscribe();
@@ -85,16 +83,14 @@ const Verify = () => {
     setSearched(true);
 
     try {
+      // Use secure RPC function that only returns non-sensitive fields
       const { data, error: dbError } = await supabase
-        .from('signage_applications')
-        .select('*')
-        .eq('application_id', searchId)
-        .maybeSingle();
+        .rpc('verify_application', { p_application_id: searchId });
 
       if (dbError) throw dbError;
 
-      if (data) {
-        setApplication(data as Application);
+      if (data && data.length > 0) {
+        setApplication(data[0] as VerificationData);
       } else {
         setApplication(null);
         setError("No application found with this ID");
@@ -274,10 +270,6 @@ const Verify = () => {
                         Important Dates
                       </h4>
                       <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <p className="text-sm text-muted-foreground">Application Date</p>
-                          <p className="font-semibold text-foreground">{formatDate(application.created_at)}</p>
-                        </div>
                         {application.issued_date && (
                           <div>
                             <p className="text-sm text-muted-foreground">Issued Date</p>
@@ -285,7 +277,7 @@ const Verify = () => {
                           </div>
                         )}
                         {application.expiry_date && (
-                          <div className="col-span-2">
+                          <div className={application.issued_date ? "" : "col-span-2"}>
                             <p className="text-sm text-muted-foreground">Expiry Date</p>
                             <p className={`font-semibold ${new Date(application.expiry_date) < new Date() ? 'text-red-600' : 'text-foreground'}`}>
                               {formatDate(application.expiry_date)}
