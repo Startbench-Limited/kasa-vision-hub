@@ -1,6 +1,7 @@
 import kasaLogo from "@/assets/kasa-logo.jpg";
 import { Button } from "@/components/ui/button";
 import { ArrowDown, Shield, Target, TrendingUp } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -30,11 +31,14 @@ const Hero = () => {
             <a href="#about" className="text-primary-foreground/90 hover:text-primary-foreground transition-colors font-medium">About</a>
             <a href="#services" className="text-primary-foreground/90 hover:text-primary-foreground transition-colors font-medium">Services</a>
             <a href="#apply" className="text-primary-foreground/90 hover:text-primary-foreground transition-colors font-medium">Apply</a>
+            <Link to="/verify" className="text-primary-foreground/90 hover:text-primary-foreground transition-colors font-medium">Verify</Link>
             <a href="#contact" className="text-primary-foreground/90 hover:text-primary-foreground transition-colors font-medium">Contact</a>
           </nav>
-          <Button variant="hero" size="sm" className="hidden md:flex">
-            Apply Now
-          </Button>
+          <Link to="#apply">
+            <Button variant="hero" size="sm" className="hidden md:flex">
+              Apply Now
+            </Button>
+          </Link>
         </header>
 
         {/* Hero Content */}

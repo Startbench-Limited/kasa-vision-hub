@@ -1,5 +1,6 @@
 import kasaLogo from "@/assets/kasa-logo.jpg";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -43,7 +44,7 @@ const Footer = () => {
               <li><a href="#about" className="text-background/70 hover:text-primary transition-colors">About Us</a></li>
               <li><a href="#services" className="text-background/70 hover:text-primary transition-colors">Our Services</a></li>
               <li><a href="#apply" className="text-background/70 hover:text-primary transition-colors">Apply for Permit</a></li>
-              <li><a href="#" className="text-background/70 hover:text-primary transition-colors">Verify Permit</a></li>
+              <li><Link to="/verify" className="text-background/70 hover:text-primary transition-colors">Verify Permit</Link></li>
               <li><a href="#" className="text-background/70 hover:text-primary transition-colors">Fee Schedule</a></li>
               <li><a href="#" className="text-background/70 hover:text-primary transition-colors">FAQs</a></li>
             </ul>

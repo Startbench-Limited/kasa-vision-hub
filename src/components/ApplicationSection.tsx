@@ -6,8 +6,22 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { CheckCircle, QrCode, Shield, Clock } from "lucide-react";
+import { CheckCircle, QrCode, Shield, Clock, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import { Link } from "react-router-dom";
+
+type SignageType = 'billboard' | 'banner' | 'neon_sign' | 'led_display' | 'wall_mount' | 'vehicle_wrap' | 'other';
+
+const signageTypeMap: Record<string, SignageType> = {
+  'billboard': 'billboard',
+  'banner': 'banner',
+  'neon-sign': 'neon_sign',
+  'led-display': 'led_display',
+  'wall-mount': 'wall_mount',
+  'vehicle-wrap': 'vehicle_wrap',
+  'other': 'other'
+};
 
 const ApplicationSection = () => {
   const [formData, setFormData] = useState({
@@ -20,6 +34,7 @@ const ApplicationSection = () => {
   });
 
   const [applicationId, setApplicationId] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const generateApplicationId = () => {
     const timestamp = Date.now().toString(36).toUpperCase();
@@ -27,7 +42,7 @@ const ApplicationSection = () => {
     return `KASA-${timestamp}-${random}`;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!formData.businessName || !formData.email || !formData.signageType) {
@@ -35,24 +50,41 @@ const ApplicationSection = () => {
       return;
     }
 
-    const newId = generateApplicationId();
-    setApplicationId(newId);
-    toast.success("Application submitted successfully! Use your QR code for verification.");
+    setIsSubmitting(true);
+
+    try {
+      const newId = generateApplicationId();
+      
+      const { error } = await supabase
+        .from('signage_applications')
+        .insert({
+          application_id: newId,
+          business_name: formData.businessName,
+          email: formData.email,
+          phone: formData.phone || null,
+          signage_type: signageTypeMap[formData.signageType],
+          location: formData.location || null,
+          description: formData.description || null
+        });
+
+      if (error) throw error;
+
+      setApplicationId(newId);
+      toast.success("Application submitted successfully! Use your QR code for verification.");
+    } catch (error) {
+      console.error('Submission error:', error);
+      toast.error("Failed to submit application. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const qrData = applicationId 
-    ? JSON.stringify({
-        id: applicationId,
-        business: formData.businessName,
-        type: formData.signageType,
-        status: "PENDING_PAYMENT",
-        expiry: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-        verified: true
-      })
+  const verifyUrl = applicationId 
+    ? `${window.location.origin}/verify?id=${applicationId}`
     : "";
 
   return (
@@ -156,8 +188,8 @@ const ApplicationSection = () => {
                   />
                 </div>
 
-                <Button type="submit" size="lg" className="w-full">
-                  Submit Application
+                <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
+                  {isSubmitting ? "Submitting..." : "Submit Application"}
                 </Button>
               </form>
             </CardContent>
@@ -180,7 +212,7 @@ const ApplicationSection = () => {
                   <div className="bg-primary-foreground rounded-2xl p-8 text-center">
                     <div className="inline-block p-4 bg-background rounded-xl mb-4">
                       <QRCodeSVG 
-                        value={qrData}
+                        value={verifyUrl}
                         size={200}
                         level="H"
                         includeMargin={true}
@@ -190,9 +222,18 @@ const ApplicationSection = () => {
                     </div>
                     <p className="text-foreground font-semibold mb-1">Application ID</p>
                     <p className="text-primary font-mono text-lg mb-4">{applicationId}</p>
-                    <div className="inline-flex items-center gap-2 bg-secondary px-4 py-2 rounded-full text-sm">
+                    <div className="inline-flex items-center gap-2 bg-secondary px-4 py-2 rounded-full text-sm mb-4">
                       <Clock className="w-4 h-4 text-primary" />
                       <span className="text-secondary-foreground">Status: Pending Payment</span>
+                    </div>
+                    <div>
+                      <Link 
+                        to={`/verify?id=${applicationId}`}
+                        className="inline-flex items-center gap-2 text-primary hover:underline text-sm"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                        View verification page
+                      </Link>
                     </div>
                   </div>
                 ) : (
@@ -224,6 +265,18 @@ const ApplicationSection = () => {
                 </div>
               ))}
             </div>
+
+            {/* Verify Link */}
+            <Link 
+              to="/verify"
+              className="block bg-secondary rounded-xl p-4 text-center hover:bg-secondary/80 transition-colors"
+            >
+              <p className="font-semibold text-foreground">Already have a permit?</p>
+              <p className="text-sm text-primary flex items-center justify-center gap-2 mt-1">
+                <QrCode className="w-4 h-4" />
+                Verify your permit status here
+              </p>
+            </Link>
           </div>
         </div>
       </div>
