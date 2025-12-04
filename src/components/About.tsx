@@ -1,4 +1,5 @@
 import { CheckCircle, Users, Building, Leaf } from "lucide-react";
+import dgImage from "@/assets/dg-image.png";
 
 const About = () => {
   const goals = [
@@ -27,6 +28,22 @@ const About = () => {
   return (
     <section id="about" className="py-24 bg-background">
       <div className="container mx-auto px-4">
+        {/* DG Image Section */}
+        <div className="flex justify-center mb-12">
+          <div className="relative">
+            <div className="w-64 h-64 md:w-80 md:h-80 rounded-2xl overflow-hidden card-shadow">
+              <img 
+                src={dgImage} 
+                alt="Director General of KASA" 
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-6 py-2 rounded-full text-sm font-semibold whitespace-nowrap">
+              Director General
+            </div>
+          </div>
+        </div>
+
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Content */}
           <div className="animate-slide-up">
